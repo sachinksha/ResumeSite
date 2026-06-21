@@ -6,8 +6,8 @@
       <h4>Photo</h4>
       <p class="description">Upload a photo or paste a URL to display on the resume.</p>
 
-      <div v-if="resumeStore.data.personalInfo.photo" class="photo-preview">
-        <img :src="resumeStore.data.personalInfo.photo" alt="Resume photo" class="photo-img" />
+      <div v-if="resumeStore.displayData.personalInfo.photo" class="photo-preview">
+        <img :src="resumeStore.displayData.personalInfo.photo" alt="Resume photo" class="photo-img" />
         <button class="btn btn-sm" @click="clearPhoto">Remove</button>
       </div>
 
@@ -48,13 +48,13 @@
         class="file-input"
         @change="handleFileUpload"
       />
-      <p v-if="resumeStore.fileName" class="file-name">Loaded: {{ resumeStore.fileName }}</p>
+      <p v-if="resumeStore.uploadFileName" class="file-name">Loaded: {{ resumeStore.uploadFileName }}</p>
     </div>
 
     <div class="action-group">
       <h4>Export Full PDF</h4>
       <p class="description">Download the complete resume as a PDF (all fields, no filters).</p>
-      <button class="btn btn-primary" :disabled="isExporting || !resumeStore.isLoaded" @click="exportFullPdf">
+      <button class="btn btn-primary" :disabled="isExporting || !(resumeStore.isLoaded || resumeStore.hasUploaded)" @click="exportFullPdf">
         {{ isExporting ? 'Exporting...' : 'Export PDF' }}
       </button>
     </div>
@@ -62,7 +62,7 @@
     <div class="action-group">
       <h4>Export Filtered PDF</h4>
       <p class="description">Download the resume PDF with current visibility settings applied.</p>
-      <button class="btn btn-primary" :disabled="isExporting || !resumeStore.isLoaded" @click="exportFilteredPdf">
+      <button class="btn btn-primary" :disabled="isExporting || !(resumeStore.isLoaded || resumeStore.hasUploaded)" @click="exportFilteredPdf">
         {{ isExporting ? 'Exporting...' : 'Export Filtered PDF' }}
       </button>
     </div>
@@ -199,7 +199,6 @@ async function exportFilteredPdf(): Promise<void> {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  object-fit: cover;
   border: 2px solid var(--color-border);
 }
 

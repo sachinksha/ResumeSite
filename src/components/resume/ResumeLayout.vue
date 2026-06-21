@@ -19,7 +19,10 @@
     </ResumeSection>
 
     <ResumeSection title="Languages" :visible="settings.fieldVisibility.languages && resume.languages.length > 0">
-      <LanguageEntry v-for="(lang, index) in resume.languages" :key="index" :language="lang" />
+      <div v-if="settings.fieldDetailModes.languages === 'detailed'" class="languages-list">
+        <LanguageEntry v-for="(lang, index) in resume.languages" :key="index" :language="lang" :show-proficiency="true" />
+      </div>
+      <p v-else class="languages-inline">{{ languageNames }}</p>
     </ResumeSection>
 
     <ResumeSection title="Achievements" :visible="settings.fieldVisibility.achievements && resume.achievements.length > 0">
@@ -27,11 +30,21 @@
     </ResumeSection>
 
     <ResumeSection title="Side Projects" :visible="settings.fieldVisibility.sideProjects && resume.sideProjects.length > 0">
-      <ProjectEntry v-for="(proj, index) in resume.sideProjects" :key="index" :project="proj" />
+      <ProjectEntry
+        v-for="(proj, index) in resume.sideProjects"
+        :key="index"
+        :project="proj"
+        :show-title="true"
+        :show-description="settings.fieldDetailModes.sideProjects !== 'name-only'"
+        :show-link="settings.fieldDetailModes.sideProjects === 'full'"
+      />
     </ResumeSection>
 
     <ResumeSection title="Other Interests" :visible="settings.fieldVisibility.otherInterests && resume.otherInterests.length > 0">
-      <InterestEntry v-for="(intr, index) in resume.otherInterests" :key="index" :interest="intr" />
+      <div v-if="settings.fieldDetailModes.otherInterests === 'detailed'" class="interests-list">
+        <InterestEntry v-for="(intr, index) in resume.otherInterests" :key="index" :interest="intr" :show-description="true" />
+      </div>
+      <p v-else class="interests-inline">{{ commaSeparatedInterests }}</p>
     </ResumeSection>
 
     <ResumeSection title="Personal Details" :visible="hasPersonalDetails">
@@ -91,6 +104,14 @@ const settings = useSettingsStore()
 
 const personalInfo = computed(() => props.resume.personalInfo)
 
+const languageNames = computed(() =>
+  props.resume.languages.map(l => l.name).join(', ')
+)
+
+const commaSeparatedInterests = computed(() =>
+  props.resume.otherInterests.map(i => i.name).join(', ')
+)
+
 const hasPersonalDetails = computed(() => {
   const p = personalInfo.value
   const v = settings.fieldVisibility
@@ -131,6 +152,19 @@ const hasPersonalDetails = computed(() => {
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
   text-align: center;
+}
+
+.languages-list,
+.interests-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.languages-inline,
+.interests-inline {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
 }
 
 .details-grid {

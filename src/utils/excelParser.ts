@@ -346,6 +346,27 @@ function parseMultiSheet(workbook: XLSX.WorkBook): ResumeData {
     return []
   }
 
+  const parseProjects = (): Project[] => {
+    const rows = readSheet('Projects')
+    if (rows.length <= 1) return []
+    const [, ...data] = rows
+    return data.filter(r => r.length >= 1).map(row => ({
+      name: row[0] || '',
+      description: row[1] || '',
+      link: row[2] || undefined,
+    }))
+  }
+
+  const parseInterests = (): Interest[] => {
+    const rows = readSheet('Interests')
+    if (rows.length <= 1) return []
+    const [, ...data] = rows
+    return data.filter(r => r.length >= 1 && r[0]).map(row => ({
+      name: row[0] || '',
+      description: row[1] || '',
+    }))
+  }
+
   return {
     personalInfo,
     workExperience,
@@ -353,8 +374,8 @@ function parseMultiSheet(workbook: XLSX.WorkBook): ResumeData {
     education,
     languages,
     achievements: parseND('Achievements') as Achievement[],
-    sideProjects: parseND('Projects') as Project[],
-    otherInterests: parseND('Interests') as Interest[],
+    sideProjects: parseProjects(),
+    otherInterests: parseInterests(),
     lastUpdated: new Date().toISOString(),
   }
 }

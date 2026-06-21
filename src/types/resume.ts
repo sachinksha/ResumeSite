@@ -56,6 +56,7 @@ export interface Achievement {
 export interface Project {
   name: string
   description: string
+  link?: string
 }
 
 export interface Interest {

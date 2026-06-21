@@ -21,9 +21,14 @@ export interface FieldVisibility {
 
 export type DetailMode = 'summary' | 'detailed'
 
+export type SideProjectMode = 'name-only' | 'name-description' | 'full'
+
 export interface FieldDetailModes {
   address: DetailMode
   role: DetailMode
+  languages: DetailMode
+  sideProjects: SideProjectMode
+  otherInterests: DetailMode
 }
 
 export interface Settings {
@@ -54,6 +59,9 @@ export const defaultFieldVisibility: FieldVisibility = {
 export const defaultFieldDetailModes: FieldDetailModes = {
   address: 'detailed',
   role: 'detailed',
+  languages: 'detailed',
+  sideProjects: 'full',
+  otherInterests: 'detailed',
 }
 
 export const defaultSettings: Settings = {

@@ -26,8 +26,13 @@ function saveToStorage(settings: Settings): void {
 export const useSettingsStore = defineStore('settings', () => {
   const saved = loadFromStorage()
   const theme = ref<Theme>(saved.theme)
-  const fieldVisibility = ref<FieldVisibility>({ ...saved.fieldVisibility })
-  const fieldDetailModes = ref<FieldDetailModes>({ ...saved.fieldDetailModes })
+  const visibilityKeys = Object.keys(defaultSettings.fieldVisibility) as (keyof FieldVisibility)[]
+  const mergedVisibility = {} as FieldVisibility
+  for (const key of visibilityKeys) {
+    mergedVisibility[key] = (saved.fieldVisibility as unknown as Record<string, boolean>)[key] ?? defaultSettings.fieldVisibility[key]
+  }
+  const fieldVisibility = ref<FieldVisibility>(mergedVisibility)
+  const fieldDetailModes = ref<FieldDetailModes>({ ...defaultSettings.fieldDetailModes, ...saved.fieldDetailModes })
 
   function persist(): void {
     saveToStorage({

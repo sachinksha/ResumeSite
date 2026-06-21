@@ -1,7 +1,7 @@
 <template>
   <div class="interest-entry">
     <span class="interest-name">{{ interest.name }}</span>
-    <p v-if="interest.description" class="interest-desc">{{ interest.description }}</p>
+    <span v-if="showDescription && interest.description" class="interest-desc"> - {{ interest.description }}</span>
   </div>
 </template>
 
@@ -10,6 +10,7 @@ import type { Interest } from '../../types/resume'
 
 defineProps<{
   interest: Interest
+  showDescription?: boolean
 }>()
 </script>
 

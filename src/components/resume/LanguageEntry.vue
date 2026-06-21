@@ -1,7 +1,7 @@
 <template>
   <div class="language-entry">
     <span class="lang-name">{{ language.name }}</span>
-    <span class="lang-proficiency">{{ language.proficiency }}</span>
+    <span v-if="showProficiency" class="lang-proficiency">{{ language.proficiency }}</span>
   </div>
 </template>
 
@@ -10,6 +10,7 @@ import type { Language } from '../../types/resume'
 
 defineProps<{
   language: Language
+  showProficiency?: boolean
 }>()
 </script>
 

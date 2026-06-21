@@ -9,23 +9,35 @@ export async function exportToPdf(element: HTMLElement, filename: string = 'Resu
     backgroundColor: '#ffffff',
   })
 
-  const imgData = canvas.toDataURL('image/png')
-  const imgWidth = 210
+  const margin = 15
+  const pageWidth = 210
   const pageHeight = 297
-  const imgHeight = (canvas.height * imgWidth) / canvas.width
+  const imgWidth = pageWidth - 2 * margin
+  const usableHeight = pageHeight - 2 * margin
+  const pxPerMm = canvas.width / imgWidth
+  const sliceHeightPx = Math.round(usableHeight * pxPerMm)
 
   const pdf = new jsPDF('p', 'mm', 'a4')
-  let heightLeft = imgHeight
-  let position = 0
+  let offsetPx = 0
+  let pageIndex = 0
 
-  pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
-  heightLeft -= pageHeight
+  while (offsetPx < canvas.height) {
+    const currentSliceHeight = Math.min(sliceHeightPx, canvas.height - offsetPx)
 
-  while (heightLeft > 0) {
-    position = heightLeft - imgHeight
-    pdf.addPage()
-    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
-    heightLeft -= pageHeight
+    const sliceCanvas = document.createElement('canvas')
+    sliceCanvas.width = canvas.width
+    sliceCanvas.height = currentSliceHeight
+    const ctx = sliceCanvas.getContext('2d')!
+    ctx.drawImage(canvas, 0, offsetPx, canvas.width, currentSliceHeight, 0, 0, canvas.width, currentSliceHeight)
+
+    const sliceData = sliceCanvas.toDataURL('image/png')
+    const sliceHeightMm = (currentSliceHeight * imgWidth) / canvas.width
+
+    if (pageIndex > 0) pdf.addPage()
+    pdf.addImage(sliceData, 'PNG', margin, margin, imgWidth, sliceHeightMm)
+
+    offsetPx += currentSliceHeight
+    pageIndex++
   }
 
   pdf.save(filename)

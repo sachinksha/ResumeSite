@@ -4,7 +4,7 @@
       <h2>Resume Not Configured</h2>
       <p>No resume data file found. Contact the developer to set up resume data.</p>
     </div>
-    <ResumeLayout v-else :resume="resumeStore.data" />
+    <ResumeLayout v-else :resume="resumeStore.staticData" />
   </main>
 </template>
 
@@ -16,7 +16,9 @@ import ResumeLayout from '../components/resume/ResumeLayout.vue'
 const resumeStore = useResumeStore()
 
 onMounted(() => {
-  resumeStore.loadFromStaticFile()
+  if (!resumeStore.isLoaded) {
+    resumeStore.loadFromStaticFile()
+  }
 })
 </script>
 

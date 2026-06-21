@@ -1,7 +1,10 @@
 <template>
   <div class="project-entry">
-    <span class="project-name">{{ project.name }}</span>
-    <p v-if="project.description" class="project-desc">{{ project.description }}</p>
+    <span v-if="showTitle" class="project-name">{{ project.name }}</span>
+    <p v-if="showDescription && project.description" class="project-desc">{{ project.description }}</p>
+    <a v-if="showLink && project.link" :href="project.link" target="_blank" rel="noopener noreferrer" class="project-link">
+      {{ project.link }}
+    </a>
   </div>
 </template>
 
@@ -10,6 +13,9 @@ import type { Project } from '../../types/resume'
 
 defineProps<{
   project: Project
+  showTitle?: boolean
+  showDescription?: boolean
+  showLink?: boolean
 }>()
 </script>
 
@@ -33,5 +39,11 @@ defineProps<{
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   margin-top: var(--spacing-xs);
+}
+
+.project-link {
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  text-decoration: none;
 }
 </style>

@@ -1,14 +1,18 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import type { ResumeData } from '../types/resume'
 import { defaultResumeData } from '../types/resume'
 import { parseResumeExcel } from '../utils/excelParser'
 
 export const useResumeStore = defineStore('resume', () => {
-  const data = ref<ResumeData>({ ...defaultResumeData })
+  const staticData = ref<ResumeData>({ ...defaultResumeData })
+  const uploadedData = ref<ResumeData | null>(null)
   const isLoaded = ref(false)
-  const fileName = ref<string | null>(null)
+  const hasUploaded = ref(false)
+  const uploadFileName = ref<string | null>(null)
   const lastError = ref<string | null>(null)
+
+  const displayData = computed(() => uploadedData.value ?? staticData.value)
 
   function loadFromExcel(file: File): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -16,9 +20,9 @@ export const useResumeStore = defineStore('resume', () => {
       reader.onload = (e) => {
         try {
           const result = parseResumeExcel(e.target!.result as ArrayBuffer)
-          data.value = result
-          isLoaded.value = true
-          fileName.value = file.name
+          uploadedData.value = result
+          hasUploaded.value = true
+          uploadFileName.value = file.name
           lastError.value = null
           resolve()
         } catch (err) {
@@ -44,29 +48,36 @@ export const useResumeStore = defineStore('resume', () => {
       }
       const buffer = await response.arrayBuffer()
       const result = parseResumeExcel(buffer)
-      data.value = result
+      staticData.value = result
       isLoaded.value = true
-      fileName.value = 'resume-data.xlsx'
       lastError.value = null
     } catch (err) {
       if (isLoaded.value) return
-      data.value = { ...defaultResumeData }
+      staticData.value = { ...defaultResumeData }
       isLoaded.value = false
-      fileName.value = null
       lastError.value = err instanceof Error ? err.message : 'Failed to load static resume'
     }
   }
 
   function setPhoto(photo: string | null): void {
-    data.value.personalInfo.photo = photo
+    staticData.value.personalInfo.photo = photo
+    if (uploadedData.value) {
+      uploadedData.value.personalInfo.photo = photo
+    }
   }
 
   function clearData(): void {
-    data.value = { ...defaultResumeData }
+    staticData.value = { ...defaultResumeData }
+    uploadedData.value = null
     isLoaded.value = false
-    fileName.value = null
+    hasUploaded.value = false
+    uploadFileName.value = null
     lastError.value = null
   }
 
-  return { data, isLoaded, fileName, lastError, loadFromExcel, loadFromStaticFile, setPhoto, clearData }
+  return {
+    staticData, uploadedData, isLoaded, hasUploaded,
+    uploadFileName, lastError, displayData,
+    loadFromExcel, loadFromStaticFile, setPhoto, clearData,
+  }
 })

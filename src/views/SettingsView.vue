@@ -27,6 +27,28 @@
           <option value="summary">Summary</option>
         </select>
       </div>
+      <div class="detail-mode-row">
+        <span class="toggle-label">Languages</span>
+        <select v-model="settings.fieldDetailModes.languages" class="detail-mode-select">
+          <option value="detailed">Name + Proficiency</option>
+          <option value="summary">Name only</option>
+        </select>
+      </div>
+      <div class="detail-mode-row">
+        <span class="toggle-label">Side Projects</span>
+        <select v-model="settings.fieldDetailModes.sideProjects" class="detail-mode-select">
+          <option value="name-only">Name only</option>
+          <option value="name-description">Name + Description</option>
+          <option value="full">Name + Description + Link</option>
+        </select>
+      </div>
+      <div class="detail-mode-row">
+        <span class="toggle-label">Other Interests</span>
+        <select v-model="settings.fieldDetailModes.otherInterests" class="detail-mode-select">
+          <option value="summary">Name only</option>
+          <option value="detailed">Name + Description</option>
+        </select>
+      </div>
     </section>
 
     <section class="settings-section">
@@ -50,14 +72,13 @@
     </section>
 
     <section class="settings-section">
-      <h2>Import / Export</h2>
       <ImportExportPanel />
     </section>
 
     <section class="settings-section">
       <h2>Preview</h2>
       <p class="section-desc">Live preview of the resume with current settings applied.</p>
-      <ResumeLayout v-if="resumeStore.isLoaded" :resume="resumeStore.data" />
+      <ResumeLayout v-if="resumeStore.isLoaded || resumeStore.hasUploaded" :resume="resumeStore.displayData" />
       <div v-else class="empty-preview">
         <p>Upload an Excel file to see the preview.</p>
       </div>

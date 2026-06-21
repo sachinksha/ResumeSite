@@ -48,12 +48,13 @@ const settings = useSettingsStore()
   border-radius: 50%;
   overflow: hidden;
   border: 2px solid var(--color-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .photo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  image-rendering: auto;
 }
 
 .header-main {

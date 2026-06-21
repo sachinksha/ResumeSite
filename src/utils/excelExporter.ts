@@ -53,7 +53,7 @@ export function exportTemplate(): void {
   XLSX.utils.book_append_sheet(wb, achievementsSheet, 'Achievements')
 
   const projectsSheet = XLSX.utils.aoa_to_sheet([
-    ['Project', 'Description'],
+    ['Project', 'Description', 'Link'],
   ])
   XLSX.utils.book_append_sheet(wb, projectsSheet, 'Projects')
 
@@ -138,8 +138,8 @@ export function exportResumeToExcel(data: ResumeData): void {
   XLSX.utils.book_append_sheet(wb, achievementsSheet, 'Achievements')
 
   const projectsData: string[][] = [
-    ['Project', 'Description'],
-    ...data.sideProjects.map(p => [p.name, p.description]),
+    ['Project', 'Description', 'Link'],
+    ...data.sideProjects.map(p => [p.name, p.description, p.link ?? '']),
   ]
   const projectsSheet = XLSX.utils.aoa_to_sheet(projectsData)
   XLSX.utils.book_append_sheet(wb, projectsSheet, 'Projects')
