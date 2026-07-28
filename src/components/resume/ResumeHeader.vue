@@ -14,8 +14,8 @@
     <div class="header-contact">
       <a v-if="personalInfo.email" :href="`mailto:${personalInfo.email}`" class="contact-link">{{ personalInfo.email }}</a>
       <span v-if="personalInfo.phone" class="contact-item">{{ personalInfo.phone }}</span>
-      <a v-if="settings.fieldVisibility.linkedIn && personalInfo.linkedIn" :href="personalInfo.linkedIn" target="_blank" rel="noopener noreferrer" class="contact-link">LinkedIn</a>
-      <a v-if="settings.fieldVisibility.github && personalInfo.github" :href="personalInfo.github" target="_blank" rel="noopener noreferrer" class="contact-link">GitHub</a>
+      <a v-if="settings.fieldVisibility.linkedIn && personalInfo.linkedIn" :href="personalInfo.linkedIn" target="_blank" rel="noopener noreferrer" class="contact-link">{{ personalInfo.linkedIn }}</a>
+      <a v-if="settings.fieldVisibility.github && personalInfo.github" :href="personalInfo.github" target="_blank" rel="noopener noreferrer" class="contact-link">{{ personalInfo.github }}</a>
     </div>
   </div>
 </template>
