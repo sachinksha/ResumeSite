@@ -28,7 +28,8 @@ export function exportTemplate(): void {
   XLSX.utils.book_append_sheet(wb, personalInfoSheet, 'Personal Info')
 
   const experienceSheet = XLSX.utils.aoa_to_sheet([
-    ['Company', 'Designation', 'Tech Stack', 'Role', 'Location', 'About Company', 'From', 'To', 'Present'],
+    ['Company', 'Designation', 'Tech Stack', 'Role', 'Location', 'About Company', 'Impact Summary', 'Highlights', 'From', 'To', 'Present'],
+    ['Example Corp', 'Senior Engineer', 'React, TypeScript', 'Led platform modernization and delivery', 'Remote', 'High-growth product company', 'Delivered a more reliable platform that improved the delivery experience for cross-functional teams.', 'Led migration to a modern stack; Improved release reliability by 35%; Reduced onboarding effort for new team members', 'Jan 2022', 'Present', 'Yes'],
   ])
   XLSX.utils.book_append_sheet(wb, experienceSheet, 'Work Experience')
 
@@ -93,7 +94,7 @@ export function exportResumeToExcel(data: ResumeData): void {
   XLSX.utils.book_append_sheet(wb, personalInfoSheet, 'Personal Info')
 
   const experienceData: string[][] = [
-    ['Company', 'Designation', 'Tech Stack', 'Role', 'Location', 'About Company', 'From', 'To', 'Present'],
+    ['Company', 'Designation', 'Tech Stack', 'Role', 'Location', 'About Company', 'Impact Summary', 'Highlights', 'From', 'To', 'Present'],
     ...data.workExperience.map(exp => [
       exp.company,
       exp.designation,
@@ -101,6 +102,8 @@ export function exportResumeToExcel(data: ResumeData): void {
       exp.role,
       exp.location,
       exp.aboutCompany,
+      exp.impactSummary,
+      exp.highlights.join('; '),
       exp.from,
       exp.to,
       exp.isPresent ? 'Yes' : 'No',

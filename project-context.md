@@ -54,6 +54,11 @@ A placeholder photo lives at `public/resume-photo.svg`. The Excel's "Photo" fiel
 - Settings page allows direct image upload (PNG/JPG/WebP → base64 data URL) or URL input.
 - `store.setPhoto()` is independent of Excel load so re-uploading Excel doesn't clear a manually-set photo.
 
+## Changelog
+- Added richer work-experience content support with impact summary and highlights fields.
+- Extended Excel template and export flow to include sample placeholder content for stronger resume storytelling.
+- Updated resume rendering to display experience impact and highlights in the UI.
+
 ## Next Phase Ideas
 - **Design view**: Drag-and-drop block rearrangement for the resume layout.
 - **Responsive / mobile**: Optimize for phone-sized viewports.

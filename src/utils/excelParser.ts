@@ -108,6 +108,13 @@ function findRowIndex(rows: Record<number, string[]>, max: number, predicate: (r
   return -1
 }
 
+function parseListCell(value: string): string[] {
+  return value
+    .split(/\r?\n|;|•\s*/)
+    .map(entry => entry.trim())
+    .filter(Boolean)
+}
+
 function parseWorkExperience(dataRows: string[][]): WorkExperience[] {
   if (dataRows.length < 1) return []
   const [header, ...rows] = dataRows
@@ -123,6 +130,8 @@ function parseWorkExperience(dataRows: string[][]): WorkExperience[] {
     role: col('role'),
     location: col('location'),
     aboutCompany: [col('about the company'), col('about company')].find(i => i >= 0) ?? -1,
+    impactSummary: [col('impact summary'), col('impact'), col('summary')].find(i => i >= 0) ?? -1,
+    highlights: [col('highlights'), col('key achievements'), col('key highlights'), col('achievements')].find(i => i >= 0) ?? -1,
     from: col('from'),
     to: col('to'),
   }
@@ -135,6 +144,8 @@ function parseWorkExperience(dataRows: string[][]): WorkExperience[] {
     role: row[ci.role] || '',
     location: row[ci.location] || '',
     aboutCompany: row[ci.aboutCompany] || '',
+    impactSummary: row[ci.impactSummary] || '',
+    highlights: ci.highlights >= 0 ? parseListCell(row[ci.highlights] || '') : [],
     from: tryParseDate(row[ci.from] || ''),
     to: tryParseDate(row[ci.to] || ''),
     isPresent: false,

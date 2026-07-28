@@ -11,6 +11,10 @@
     <div class="card-body">
       <p v-if="experience.aboutCompany" class="about-company">{{ experience.aboutCompany }}</p>
       <p v-if="experience.role" class="role">{{ experience.role }}</p>
+      <p v-if="experience.impactSummary" class="impact-summary">{{ experience.impactSummary }}</p>
+      <ul v-if="experience.highlights?.length" class="highlights-list">
+        <li v-for="(highlight, index) in experience.highlights" :key="index" class="highlight-item">{{ highlight }}</li>
+      </ul>
       <div v-if="experience.techStack.length > 0" class="tech-stack">
         <span class="tech-label">Tech Stack:</span>
         <span v-for="tech in experience.techStack" :key="tech" class="tech-badge">{{ tech }}</span>
@@ -88,6 +92,23 @@ defineProps<{
 
 .role {
   margin-bottom: var(--spacing-sm);
+}
+
+.impact-summary {
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.highlights-list {
+  margin: 0 0 var(--spacing-sm) 1.1rem;
+  padding: 0;
+  color: var(--color-text-secondary);
+}
+
+.highlight-item {
+  margin-bottom: var(--spacing-xs);
+  line-height: 1.6;
 }
 
 .tech-stack {

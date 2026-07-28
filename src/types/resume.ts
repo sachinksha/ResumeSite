@@ -27,6 +27,8 @@ export interface WorkExperience {
   role: string
   location: string
   aboutCompany: string
+  impactSummary: string
+  highlights: string[]
   from: string
   to: string
   isPresent: boolean
