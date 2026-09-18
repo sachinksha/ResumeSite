@@ -45,8 +45,8 @@
       <div class="detail-mode-row">
         <span class="toggle-label">Other Interests</span>
         <select v-model="settings.fieldDetailModes.otherInterests" class="detail-mode-select">
-          <option value="summary">Name only</option>
           <option value="detailed">Name + Description</option>
+          <option value="summary">Name only</option>
         </select>
       </div>
     </section>
